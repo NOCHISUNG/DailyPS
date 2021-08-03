@@ -20,59 +20,31 @@ input = sys.stdin.readline
 
 
 def erase_bomb_spot_r(r, c):
-    c_cpy = c
-    while True:
-        c += 1
-        if c == N:
-            for j in range(c_cpy + 1, c):
-                bomb_spots[r][j] = False
-            return True
-        if board[r][c] == 'O' or board[r][c] == 'X':
-            for j in range(c_cpy + 1, c):
-                bomb_spots[r][j] = False
-            return True
+    for j in range(c + 1, N):
+        if board[r][j] == 'O' or board[r][j] == 'X':
+            return
+        bomb_spots[r][j] = False
 
 
 def erase_bomb_spot_d(r, c):
-    r_cpy = r
-    while True:
-        r += 1
-        if r == N:
-            for i in range(r_cpy + 1, r):
-                bomb_spots[i][c] = False
-            return True
-        if board[r][c] == 'O' or board[r][c] == 'X':
-            for i in range(r_cpy + 1, r):
-                bomb_spots[i][c] = False
-            return True
+    for i in range(r + 1, N):
+        if board[i][c] == 'O' or board[i][c] == 'X':
+            return
+        bomb_spots[i][c] = False
 
 
 def erase_bomb_spot_l(r, c):
-    c_cpy = c
-    while True:
-        c -= 1
-        if c == -1:
-            for j in range(c_cpy - 1, c, -1):
-                bomb_spots[r][j] = False
-            return True
-        if board[r][c] == 'O' or board[r][c] == 'X':
-            for j in range(c_cpy - 1, c, -1):
-                bomb_spots[r][j] = False
-            return True
+    for j in range(c - 1, -1, -1):
+        if board[r][j] == 'O' or board[r][j] == 'X':
+            return
+        bomb_spots[r][j] = False
 
 
 def erase_bomb_spot_u(r, c):
-    r_cpy = r
-    while True:
-        r -= 1
-        if r == -1:
-            for i in range(r_cpy - 1, r, -1):
-                bomb_spots[i][c] = False
-            return True
-        if board[r][c] == 'O' or board[r][c] == 'X':
-            for i in range(r_cpy - 1, r, -1):
-                bomb_spots[i][c] = False
-            return True
+    for i in range(r - 1, -1, -1):
+        if board[i][c] == 'O' or board[i][c] == 'X':
+            return
+        bomb_spots[i][c] = False
 
 
 if __name__ == "__main__":

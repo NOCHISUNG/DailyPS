@@ -26,58 +26,32 @@ char board[2005][2005];
 bool bomb_spots[2005][2005];
 
 // 함수
-bool erase_bomb_spot(int r, int c, char direction){
-    int c_cpy = c;
-    int r_cpy = r;
+void erase_bomb_spot(int r, int c, char direction){
     switch (direction){
         case 'r':
-            while (true) {
-                c++;
-                if (c == N) {
-                    for (int j = c_cpy + 1; j < c; j++) bomb_spots[r][j] = false;
-                    return true;
-                }
-                if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int j = c_cpy + 1; j < c; j++) bomb_spots[r][j] = false;
-                    return true;
-                }
+            for (int j = c + 1; j < N; j++){
+                if (board[r][j] == 'O' || board[r][j] == 'X') return;
+                bomb_spots[r][j] = false;
             }
+            break;
         case 'd':
-            while (true) {
-                r++;
-                if (r == N){
-                    for (int i = r_cpy + 1; i < r; i++) bomb_spots[i][c] = false;
-                    return true;
-                }
-                if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int i = r_cpy + 1; i < r; i++) bomb_spots[i][c] = false;
-                    return true;
-                }
+            for (int i = r + 1; i < N; i++){
+                if (board[i][c] == 'O' || board[i][c] == 'X') return;
+                bomb_spots[i][c] = false;
             }
+            break;
         case 'l':
-            while (true) {
-                c--;
-                if (c == -1) {
-                    for (int j = c_cpy - 1; j > c; j--) bomb_spots[r][j] = false;
-                    return true;
-                }
-                if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int j = c_cpy - 1; j > c; j--) bomb_spots[r][j] = false;
-                    return true;
-                }
+            for (int j = c - 1; j >= 0; j--){
+                if (board[r][j] == 'O' || board[r][j] == 'X') return;
+                bomb_spots[r][j] = false;
             }
+            break;
         case 'u':
-            while (true) {
-                r--;
-                if (r == -1){
-                    for (int i = r_cpy - 1; i > r; i--) bomb_spots[i][c] = false;
-                    return true;
-                }
-                if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int i = r_cpy - 1; i > r; i--) bomb_spots[i][c] = false;
-                    return true;
-                }
+            for (int i = r - 1; i >= 0; i--){
+                if (board[i][c] == 'O' || board[i][c] == 'X') return;
+                bomb_spots[i][c] = false;
             }
+            break;
     }
 }
 
