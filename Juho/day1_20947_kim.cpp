@@ -23,68 +23,9 @@ using namespace std;
 int N;
 string line;
 char board[2005][2005];
-bool chk[2005][2005];
+bool bomb_spots[2005][2005];
 
 // 함수
-bool bomb_spot_chk(int r, int c, char direction){
-    int c_cpy = c;
-    int r_cpy = r;
-    switch(direction){
-        case 'r':
-            while (true) {
-                c++;
-                if (c == N) {
-                    for (int j = c_cpy + 1; j < c; j++) chk[r][j] = true;
-                    return true;
-                }
-                if (board[r][c] == 'O') return false;
-                if (board[r][c] == 'X'){
-                    for (int j = c_cpy + 1; j < c; j++) chk[r][j] = true;
-                    return true;
-                }
-            }
-        case 'd':
-            while (true) {
-                r++;
-                if (r == N){
-                    for (int i = r_cpy + 1; i < r; i++) chk[i][c] = true;
-                    return true;
-                }
-                if (board[r][c] == 'O') return false;
-                if (board[r][c] == 'X'){
-                    for (int i = r_cpy + 1; i < r; i++) chk[i][c] = true;
-                    return true;
-                }
-            }
-        case 'l':
-            while (true) {
-                c--;
-                if (c == -1) {
-                    for (int j = c_cpy - 1; j > c; j--) chk[r][j] = true;
-                    return true;
-                }
-                if (board[r][c] == 'O') return false;
-                if (board[r][c] == 'X'){
-                    for (int j = c_cpy - 1; j > c; j--) chk[r][j] = true;
-                    return true;
-                }
-            }
-        case 'u':
-            while (true) {
-                r--;
-                if (r == -1){
-                    for (int i = r_cpy - 1; i > r; i--) chk[i][c] = true;
-                    return true;
-                }
-                if (board[r][c] == 'O') return false;
-                if (board[r][c] == 'X'){
-                    for (int i = r_cpy - 1; i > r; i--) chk[i][c] = true;
-                    return true;
-                }
-            }
-    }
-}
-
 bool erase_bomb_spot(int r, int c, char direction){
     int c_cpy = c;
     int r_cpy = r;
@@ -93,11 +34,11 @@ bool erase_bomb_spot(int r, int c, char direction){
             while (true) {
                 c++;
                 if (c == N) {
-                    for (int j = c_cpy + 1; j < c; j++) chk[r][j] = false;
+                    for (int j = c_cpy + 1; j < c; j++) bomb_spots[r][j] = false;
                     return true;
                 }
                 if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int j = c_cpy + 1; j < c; j++) chk[r][j] = false;
+                    for (int j = c_cpy + 1; j < c; j++) bomb_spots[r][j] = false;
                     return true;
                 }
             }
@@ -105,11 +46,11 @@ bool erase_bomb_spot(int r, int c, char direction){
             while (true) {
                 r++;
                 if (r == N){
-                    for (int i = r_cpy + 1; i < r; i++) chk[i][c] = false;
+                    for (int i = r_cpy + 1; i < r; i++) bomb_spots[i][c] = false;
                     return true;
                 }
                 if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int i = r_cpy + 1; i < r; i++) chk[i][c] = false;
+                    for (int i = r_cpy + 1; i < r; i++) bomb_spots[i][c] = false;
                     return true;
                 }
             }
@@ -117,11 +58,11 @@ bool erase_bomb_spot(int r, int c, char direction){
             while (true) {
                 c--;
                 if (c == -1) {
-                    for (int j = c_cpy - 1; j > c; j--) chk[r][j] = false;
+                    for (int j = c_cpy - 1; j > c; j--) bomb_spots[r][j] = false;
                     return true;
                 }
                 if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int j = c_cpy - 1; j > c; j--) chk[r][j] = false;
+                    for (int j = c_cpy - 1; j > c; j--) bomb_spots[r][j] = false;
                     return true;
                 }
             }
@@ -129,11 +70,11 @@ bool erase_bomb_spot(int r, int c, char direction){
             while (true) {
                 r--;
                 if (r == -1){
-                    for (int i = r_cpy - 1; i > r; i--) chk[i][c] = false;
+                    for (int i = r_cpy - 1; i > r; i--) bomb_spots[i][c] = false;
                     return true;
                 }
                 if (board[r][c] == 'O' || board[r][c] == 'X'){
-                    for (int i = r_cpy - 1; i > r; i--) chk[i][c] = false;
+                    for (int i = r_cpy - 1; i > r; i--) bomb_spots[i][c] = false;
                     return true;
                 }
             }
@@ -153,14 +94,10 @@ int main(){
         }
     }
 
-
-    for (int r = 0; r < N; r++){
-        for (int c = 0; c < N; c++){
-            if (board[r][c] == 'X'){
-                bomb_spot_chk(r, c, 'r');
-                bomb_spot_chk(r, c, 'd');
-                bomb_spot_chk(r, c, 'l');
-                bomb_spot_chk(r, c, 'u');
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < N; j++){
+            if (board[i][j] == '.'){
+                bomb_spots[i][j] = true;
             }
         }
     }
@@ -179,7 +116,7 @@ int main(){
     // print out
     for (int r = 0; r < N; r++){
         for (int c = 0; c < N; c++){
-            if (chk[r][c]) cout << 'B';
+            if (bomb_spots[r][c]) cout << 'B';
             else cout << board[r][c];
         }
         cout << '\n';
