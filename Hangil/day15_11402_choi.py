@@ -1,5 +1,3 @@
-#platinum 5
-
 import sys
 
 input = sys.stdin.readline
