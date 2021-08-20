@@ -8,6 +8,7 @@ dp = [[[0 for k in range(3)] for y in range(n)] for x in range(n)]
 #dp[x][y][k] x,y좌표에 k방향으로 오는 방법의 수
 #k 0 : 가로, 1 : 세로, 2 : 대각
 
+
 for y in range(1, n):
     if table[0][y] == 1:
         break
